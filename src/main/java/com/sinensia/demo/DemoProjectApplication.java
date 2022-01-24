@@ -19,4 +19,9 @@ public class DemoProjectApplication {
 		return String.format("Hello %s!", name);
 	}
 
+	@GetMapping("/")
+	public String empty(){
+		return String.format("Hola");
+	}
+
 }
