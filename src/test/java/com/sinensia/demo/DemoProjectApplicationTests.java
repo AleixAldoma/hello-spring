@@ -1,6 +1,8 @@
 package com.sinensia.demo;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,11 +27,44 @@ class DemoProjectApplicationTests {
 	void helloTest(@Autowired TestRestTemplate restTemplate){
 		assertThat(restTemplate.getForObject("/hello",String.class)).isEqualTo("Hello World!");
 	}
+	@Test
+	void helloNameTest(@Autowired TestRestTemplate restTemplate){
+		String[] arr = {"Aleix","Aldomà","Aleix%20Aldomà"};
+		for(String name:arr){
+			assertThat(restTemplate.getForObject("/hello?name="+name,String.class)).isEqualTo("Hello "+name+"!");
+		}
+	}
+	@Autowired TestRestTemplate restTemplate;
+	@ParameterizedTest
+	@ValueSource(strings = {"Aleix","Aldomà","Aleix%20Aldomà"})
+	void helloNameParam(String name){
+		assertThat(restTemplate.getForObject("/hello?name="+name,String.class)).isEqualTo("Hello "+name+"!");
+	}
 
 	@Test
     void canAdd(@Autowired TestRestTemplate restTemplate) {
             assertThat(restTemplate.getForObject("/add?n1=1&n2=2", String.class))
                             .isEqualTo("3");
+    }
+	@Test
+    void canAddZero(@Autowired TestRestTemplate restTemplate) {
+            assertThat(restTemplate.getForObject("/add?n1=0&n2=2", String.class))
+                            .isEqualTo("2");
+    }
+	@Test
+    void canAddNegative(@Autowired TestRestTemplate restTemplate) {
+            assertThat(restTemplate.getForObject("/add?n1=1&n2=-2", String.class))
+                            .isEqualTo("-1");
+    }
+	@Test
+    void canAddNull(@Autowired TestRestTemplate restTemplate) {
+            assertThat(restTemplate.getForObject("/add?n1=&n2=2", String.class))
+                            .isEqualTo("2");
+    }
+	@Test
+    void canAddFraction(@Autowired TestRestTemplate restTemplate) {
+            assertThat(restTemplate.getForObject("/add?n1=1.5&n2=2", String.class))
+                            .isEqualTo("3.5");
     }
 
 }
