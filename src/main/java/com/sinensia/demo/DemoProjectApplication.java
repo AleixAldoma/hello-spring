@@ -24,8 +24,11 @@ public class DemoProjectApplication {
 		return String.format("Hola");
 	}
 
-	@GetMapping("/add")public String add(@RequestParam(value = "n1", defaultValue = "0") int n1, @RequestParam(value = "n2", defaultValue = "0") int n2) {
-		return String.valueOf(n1+n2);
+	@GetMapping("/add")public Object add(@RequestParam(value = "n1", defaultValue = "0") Float n1, @RequestParam(value = "n2", defaultValue = "0") Float n2) {
+		Float sum = n1+n2;
+		Float decimals = sum - sum.intValue();
+		if(decimals!=0) return sum;
+		return Integer.valueOf(sum.intValue());
 	}
 
 }
