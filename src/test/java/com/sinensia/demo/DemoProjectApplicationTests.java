@@ -109,5 +109,21 @@ class DemoProjectApplicationTests {
 			restTemplate.getForObject("/add?n1=hola&n2=2", Float.class);
 		});
 	}
+	@ParameterizedTest
+	@CsvSource({
+			"1,2,3",
+			"1,1,2",
+			"1.0,1.0,2",
+			"1,-2,-1"
+	})
+	void canAddFloatParamCsv(String a, String b, String expected){
+		assertThat(restTemplate.getForObject("/add?n1="+a+"&n2="+b, Float.class))
+				.isEqualTo(Float.parseFloat(expected));
+	}
+	/*@Test
+	void canAddInteger(){
+		assertThat(restTemplate.getForObject("/add?n1=1.5&n2=2",Integer.class))
+				.isEqualTo(3.5f);
+	}*/
 
 }
