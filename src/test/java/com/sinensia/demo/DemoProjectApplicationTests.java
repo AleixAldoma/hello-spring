@@ -1,5 +1,7 @@
 package com.sinensia.demo;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -125,5 +127,19 @@ class DemoProjectApplicationTests {
 		assertThat(restTemplate.getForObject("/add?n1=1.5&n2=2",Integer.class))
 				.isEqualTo(3.5f);
 	}*/
+	@Nested
+	@DisplayName("Application tests")
+	class AppTests{
+		@Autowired
+		private DemoProjectApplication app;
 
+		@Test
+		void appCanAddReturnsInteger(){
+			assertThat(app.add(1f,2f)).isEqualTo(3);
+		}
+		@Test
+		void appCanAddReturnsFloat(){
+			assertThat(app.add(1.5f,2f)).isEqualTo(3.5f);
+		}
+	}
 }
