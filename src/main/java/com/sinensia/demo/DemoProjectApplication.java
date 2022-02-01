@@ -14,27 +14,39 @@ public class DemoProjectApplication {
 		SpringApplication.run(DemoProjectApplication.class, args);
 	}
 
+	@GetMapping("/")
+	public String root() {
+		return "Hola ke ase";
+	}
+
 	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name){
+	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
 	}
 
-	@GetMapping("/")
-	public String empty(){
-		return String.format("Hola");
-	}
-
-	@GetMapping("/multiply")public Object add(@RequestParam(value = "n1", defaultValue = "0") Float n1, @RequestParam(value = "n2", defaultValue = "0") Float n2) {
-		Float sum = n1+n2;
+	@GetMapping("/add")
+	public Object add(
+			@RequestParam(value="a", defaultValue = "0") Float a,
+			@RequestParam(value="b", defaultValue = "0") Float b
+	) {
+		Float sum = a+b;
 		Float decimals = sum - sum.intValue();
-		if(decimals!=0) return sum;
+		if(decimals!=0) {
+			return sum;
+		}
 		return Integer.valueOf(sum.intValue());
 	}
-	@GetMapping("/multiply")public Object multiply(@RequestParam(value = "n1", defaultValue = "0") Float n1, @RequestParam(value = "n2", defaultValue = "0") Float n2) {
-		Float mult = n1*n2;
-		Float decimals = mult - mult.intValue();
-		if(decimals!=0) return mult;
-		return Integer.valueOf(mult.intValue());
-	}
 
+	@GetMapping("/multiply")
+	public Object multiply(
+			@RequestParam(value="a", defaultValue = "0") Float a,
+			@RequestParam(value="b", defaultValue = "0") Float b
+	) {
+		Float product = a * b;
+		Float decimals = product - product.intValue();
+		if(decimals!=0) {
+			return product;
+		}
+		return Integer.valueOf(product.intValue());
+	}
 }
