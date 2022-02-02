@@ -13,7 +13,7 @@ pipeline {
                     recordIssues(
                         tools: [
                             pmdParser(pattern: 'build/reports/pmd/*.xml'),
-                            pit(pattern: 'build/reports/pitest/º.xml')
+                            pit(pattern: 'build/reports/pitest/*.xml')
                         ]
                     )
                 }
