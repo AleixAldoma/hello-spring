@@ -14,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.web.client.RestClientException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -252,7 +255,7 @@ class DemoProjectApplicationTests {
 				" 1.0, 1.0, 1.00",
 				"10,   3,   3.33"
 		})
-		void canAddCsvParameterizedFloat(String a, String b, String expected) {
+		void canDivideCsvParameterizedFloat(String a, String b, String expected) {
 			assertThat(restTemplate.getForObject("/divide?a="+a+"&b="+b, Float.class))
 					.isEqualTo(Float.parseFloat(expected));
 		}
@@ -261,6 +264,29 @@ class DemoProjectApplicationTests {
 		void divideByZero() {
 			Exception thrown = assertThrows(RestClientException.class, ()->{
 				restTemplate.getForObject("/divide?a=10&b=0", Float.class);
+			});
+		}
+	}
+
+	@Nested
+	class SqrtTests {
+		@DisplayName("multiple sqrts")
+		@ParameterizedTest(name="{displayName} [{index}] {0} = {1}")
+		@CsvSource({
+				"81,9",
+				"4,2",
+				"0,0",
+				"1.5, 1.224744871391589"
+		})
+		void canSqrt(String a, double expected){
+			assertThat(restTemplate.getForObject("/sqrt?a="+a, double.class))
+					.isEqualTo(expected);
+		}
+
+		@Test
+		void sqrtNegative() {
+			Exception thrown = assertThrows(RestClientException.class, ()->{
+				restTemplate.getForObject("/sqrt?a=-10", float.class);
 			});
 		}
 	}

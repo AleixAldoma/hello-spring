@@ -77,4 +77,11 @@ public class DemoProjectApplication {
 		return a.divide(b, 2, HALF_DOWN);
 	}
 
+	@GetMapping("/sqrt")
+	public double sqrt(
+			@RequestParam(value="a", defaultValue = "0") double a
+	) {
+		return Math.sqrt(a);
+	}
+
 }
